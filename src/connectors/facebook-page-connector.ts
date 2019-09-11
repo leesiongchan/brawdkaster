@@ -36,7 +36,7 @@ export class FacebookPageConnector extends Connector {
     return got.post(`${this.apiBaseUrl}/${this.pageId}/feed`, {
       query: {
         ...message,
-        accessToken: this.accessToken,
+        access_token: this.accessToken,
       },
     });
   }
