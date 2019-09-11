@@ -34,6 +34,7 @@ export class FacebookPageConnector extends Connector {
   public broadcast(message: FacebookPageBroadcastMessage) {
     // * NOTE: https://developers.facebook.com/docs/pages/publishing
     return got.post(`${this.apiBaseUrl}/${this.pageId}/feed`, {
+      json: true,
       query: {
         ...message,
         access_token: this.accessToken,

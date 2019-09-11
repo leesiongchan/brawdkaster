@@ -1,6 +1,6 @@
 {
   "name": "@leesiongchan/brawdkaster",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "dist/brawdkaster.cjs.js",
   "module": "dist/brawdkaster.esm.js",
   "types": "dist/index.d.ts",
