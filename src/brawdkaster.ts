@@ -1,4 +1,5 @@
 import Connector, { BroadcastMessage } from './connectors/connector';
+import allSettled from 'promise.allsettled';
 
 interface BrawdkasterConfig {
   connectors: Connector[];
@@ -15,10 +16,16 @@ class Brawdkaster {
     this.connectors = config.connectors;
   }
 
-  public broadcast<T extends BroadcastMessage>(message: T, options: BrawdkasterOptions = {}) {
-    const broadcastPromises = this.connectors.map(connector => connector.broadcast(message));
+  public async broadcast<T extends BroadcastMessage>(message: T, options: BrawdkasterOptions = {}) {
+    const connectors = !!options.only
+      ? this.connectors.filter(connector => options.only!.includes(connector.getId()))
+      : this.connectors;
+    const broadcastPromises = connectors.map(connector => connector.broadcast(message));
+    const results = await allSettled(broadcastPromises);
 
-    return Promise.all(broadcastPromises);
+    return results.map((result, index) => ({
+      [connectors[index].getId()]: result.status === 'fulfilled' ? result.value : result.reason,
+    }));
   }
 }
 

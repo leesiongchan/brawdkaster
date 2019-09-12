@@ -1,6 +1,6 @@
 {
   "name": "@leesiongchan/brawdkaster",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leesiongchan/brawdkaster.git",
@@ -30,10 +30,12 @@
     "test": "ts-node test/test.ts"
   },
   "dependencies": {
-    "got": "^9.6.0"
+    "got": "^9.6.0",
+    "promise.allsettled": "^1.0.1"
   },
   "devDependencies": {
     "@types/got": "^9.6.7",
+    "@types/promise.allsettled": "^1.0.1",
     "rollup": "^1.21.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-typescript2": "^0.24.1",
