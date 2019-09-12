@@ -51,9 +51,9 @@ export class LinkedInConnector extends Connector {
     this.httpClient = httpClient.extend({
       baseUrl: this.apiBaseUrl,
       headers: {
+        'Authorization': `Bearer ${config.accessToken}`,
         'Cache-Control': 'no-cache',
         'X-Restli-Protocol-Version': '2.0.0',
-        Authorization: `Bearer ${config.accessToken}`,
       },
     });
   }

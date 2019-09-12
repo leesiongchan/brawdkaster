@@ -36,6 +36,7 @@ brawdkaster.broadcast(
 - [ ] Twitter Connector
 - [ ] Instagram Connector
 - [x] LinkedIn Connector
+- [ ] LinkedIn Page Connector
 - [ ] WhatsApp Connector
 - [ ] Tumblr Connector
 - [ ] Better Documentation
