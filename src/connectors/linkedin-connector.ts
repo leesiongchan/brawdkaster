@@ -16,13 +16,13 @@ export interface LinkedInPageBroadcastMessage extends BroadcastMessage {
 interface LinkedInShareRequest {
   author: string;
   lifecycleState: 'PUBLISHED';
-  specificContent: LinkedInShareContent;
-  visibility: 'CONNECTIONS' | 'PUBLIC';
+  specificContent: { 'com.linkedin.ugc.ShareContent': LinkedInShareContent };
+  visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'CONNECTIONS' | 'PUBLIC' };
 }
 
 interface LinkedInShareContent {
   media?: LinkedInShareMedia[];
-  shareCommentary: string;
+  shareCommentary: { text: string };
   shareMediaCategory: 'NONE' | 'ARTICLE' | 'IMAGE';
 }
 
@@ -47,7 +47,7 @@ export class LinkedInConnector extends Connector {
     super(config);
 
     this.accessToken = config.accessToken;
-    this.apiVersion = config.apiVersion || 'v2.0';
+    this.apiVersion = config.apiVersion || 'v2';
     this.httpClient = httpClient.extend({
       baseUrl: this.apiBaseUrl,
       headers: {
@@ -56,8 +56,6 @@ export class LinkedInConnector extends Connector {
         Authorization: `Bearer ${config.accessToken}`,
       },
     });
-
-    this.initialize();
   }
 
   private get apiBaseUrl() {
@@ -65,22 +63,26 @@ export class LinkedInConnector extends Connector {
   }
 
   // * NOTE: https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/share-on-linkedin
-  public broadcast(message: LinkedInPageBroadcastMessage) {
+  public async broadcast(message: LinkedInPageBroadcastMessage) {
     if (!this.profile) {
-      throw new Error('[LinkedInConnector] `profile` is not defined.');
+      await this.initialize();
     }
 
-    const query: LinkedInShareRequest = {
+    const body: LinkedInShareRequest = {
       author: `urn:li:person:${this.profile.id}`,
       lifecycleState: 'PUBLISHED',
       specificContent: {
-        shareCommentary: message.message,
-        shareMediaCategory: 'NONE',
+        'com.linkedin.ugc.ShareContent': {
+          shareCommentary: { text: message.message },
+          shareMediaCategory: 'NONE',
+        },
       },
-      visibility: 'PUBLIC',
+      visibility: {
+        'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
+      },
     };
 
-    return this.httpClient.post('/ugcPosts', { query }).then(response => response.body);
+    return this.httpClient.post('/ugcPosts', { body }).then(response => response.body);
   }
 
   private async initialize() {

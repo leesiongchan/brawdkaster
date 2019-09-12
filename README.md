@@ -15,7 +15,7 @@ const linkedInConnector = new LinkedInConnector({
   id: 'my-linkedin',
 });
 const brawdkaster = new Brawdkaster({
-  connectors: [facebookPageConnector],
+  connectors: [facebookPageConnector, linkedInConnector],
 });
 
 brawdkaster.broadcast(
@@ -39,4 +39,5 @@ brawdkaster.broadcast(
 - [ ] WhatsApp Connector
 - [ ] Tumblr Connector
 - [ ] Better Documentation
+- [ ] Add debug logs
 - [ ] Test Cases
