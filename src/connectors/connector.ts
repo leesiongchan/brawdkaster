@@ -1,5 +1,5 @@
 export interface ConnectorConfig {
-  name: string;
+  id: string;
 }
 
 export interface BroadcastMessage {
@@ -7,16 +7,16 @@ export interface BroadcastMessage {
 }
 
 export abstract class Connector<Config extends ConnectorConfig = ConnectorConfig> {
-  protected readonly name: string;
+  protected readonly id: string;
 
   constructor(config: Config) {
-    this.name = config.name;
+    this.id = config.id;
   }
 
   public abstract broadcast<Message extends BroadcastMessage>(message: Message): any;
 
-  public getName() {
-    return this.name;
+  public getId() {
+    return this.id;
   }
 }
 

@@ -1,6 +1,7 @@
-import got from 'got';
+import { GotInstance, GotJSONFn } from 'got';
 
 import Connector, { BroadcastMessage, ConnectorConfig } from './connector';
+import httpClient from '../utils/http-client';
 
 export interface FacebookPageConnectorConfig extends ConnectorConfig {
   apiVersion?: string;
@@ -9,7 +10,7 @@ export interface FacebookPageConnectorConfig extends ConnectorConfig {
 }
 
 export interface FacebookPageBroadcastMessage extends BroadcastMessage {
-  images?: string[];
+  // TODO: WIP
 }
 
 export class FacebookPageConnector extends Connector {
@@ -18,6 +19,7 @@ export class FacebookPageConnector extends Connector {
   private readonly accessToken: string;
   private readonly apiVersion: string;
   private readonly pageId: string;
+  private httpClient: GotInstance<GotJSONFn>;
 
   constructor(config: FacebookPageConnectorConfig) {
     super(config);
@@ -25,21 +27,27 @@ export class FacebookPageConnector extends Connector {
     this.accessToken = config.accessToken;
     this.apiVersion = config.apiVersion || 'v4.0';
     this.pageId = config.pageId;
+    this.httpClient = httpClient.extend({
+      baseUrl: `${this.apiBaseUrl}/${this.pageId}`,
+      hooks: {
+        beforeRequest: [
+          options => {
+            if (typeof options.query === 'object') {
+              options.query = { ...options.query, access_token: config.accessToken };
+            }
+          },
+        ],
+      },
+    });
   }
 
   private get apiBaseUrl() {
     return `${this.API_HOST}/${this.apiVersion}`;
   }
 
+  // * NOTE: https://developers.facebook.com/docs/pages/publishing
   public broadcast(message: FacebookPageBroadcastMessage) {
-    // * NOTE: https://developers.facebook.com/docs/pages/publishing
-    return got.post(`${this.apiBaseUrl}/${this.pageId}/feed`, {
-      json: true,
-      query: {
-        ...message,
-        access_token: this.accessToken,
-      },
-    });
+    return this.httpClient.post('/feed', { query: message }).then(response => response.body);
   }
 }
 
