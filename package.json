@@ -1,6 +1,22 @@
 {
   "name": "@leesiongchan/brawdkaster",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leesiongchan/brawdkaster.git",
+    "baseUrl": "https://github.com/leesiongchan/brawdkaster"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Lee Siong Chan",
+    "email": "ahlee2326@me.com"
+  },
+  "keywords": [
+    "facebook",
+    "linkedin",
+    "social-media",
+    "share"
+  ],
   "main": "dist/brawdkaster.cjs.js",
   "module": "dist/brawdkaster.esm.js",
   "types": "dist/index.d.ts",
