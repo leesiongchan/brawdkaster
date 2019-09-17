@@ -10,12 +10,29 @@ const facebookPageConnector = new FacebookPageConnector({
   id: 'my-fb-page', // `id` is an identifier so you can have multiple same type of connectors
   pageId: '1234',
 });
+const instagramBusinessConnector = new InstagramBusinessConnector({
+  accessToken: 'a1b2',
+  id: 'my-ig-page',
+  userId: '1234',
+});
 const linkedInConnector = new LinkedInConnector({
   accessToken: 'a1b2',
   id: 'my-linkedin',
 });
+const twitterConnector = new LinkedInConnector({
+  accessToken: '1234',
+  accessTokenSecret: '5678',
+  consumerKey: 'abcd',
+  consumerSecret: 'efgh',
+  id: 'my-twitter',
+});
 const brawdkaster = new Brawdkaster({
-  connectors: [facebookPageConnector, linkedInConnector],
+  connectors: [
+    facebookPageConnector,
+    instagramBusinessConnector, // Not tested
+    linkedInConnector,
+    twitterConnector, // Not tested
+  ],
 });
 
 brawdkaster.broadcast(
@@ -29,12 +46,16 @@ brawdkaster.broadcast(
 );
 ```
 
+## Build your own connector
+
+WIP
+
 ## TODO
 
 - [ ] Facebook Connector
 - [x] Facebook Page Connector
-- [ ] Twitter Connector
-- [ ] Instagram Connector
+- [x] Twitter Connector
+- [x] Instagram Business Connector
 - [x] LinkedIn Connector
 - [ ] LinkedIn Page Connector
 - [ ] WhatsApp Connector

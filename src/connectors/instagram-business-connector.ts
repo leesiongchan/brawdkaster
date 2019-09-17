@@ -3,32 +3,32 @@ import { GotInstance, GotJSONFn } from 'got';
 import Connector, { BroadcastMessage, ConnectorConfig } from './connector';
 import httpClient from '../utils/http-client';
 
-export interface FacebookPageConnectorConfig extends ConnectorConfig {
+export interface InstagramBusinessConnectorConfig extends ConnectorConfig {
   apiVersion?: string;
   accessToken: string;
-  pageId: string;
+  userId: string;
 }
 
-export interface FacebookPageBroadcastMessage extends BroadcastMessage {
+export interface InstagramBusinessBroadcastMessage extends BroadcastMessage {
   // TODO: WIP
 }
 
-export class FacebookPageConnector extends Connector {
+export class InstagramBusinessConnector extends Connector {
   private readonly API_HOST = 'https://graph.facebook.com';
 
   private readonly accessToken: string;
   private readonly apiVersion: string;
-  private readonly pageId: string;
+  private readonly userId: string;
   private httpClient: GotInstance<GotJSONFn>;
 
-  constructor(config: FacebookPageConnectorConfig) {
+  constructor(config: InstagramBusinessConnectorConfig) {
     super(config);
 
     this.accessToken = config.accessToken;
     this.apiVersion = config.apiVersion || 'v4.0';
-    this.pageId = config.pageId;
+    this.userId = config.userId;
     this.httpClient = httpClient.extend({
-      baseUrl: `${this.apiBaseUrl}/${config.pageId}`,
+      baseUrl: `${this.apiBaseUrl}/${config.userId}`,
       hooks: {
         beforeRequest: [
           options => {
@@ -45,10 +45,12 @@ export class FacebookPageConnector extends Connector {
     return `${this.API_HOST}/${this.apiVersion}`;
   }
 
-  // * NOTE: https://developers.facebook.com/docs/pages/publishing
-  public broadcast(message: FacebookPageBroadcastMessage) {
-    return this.httpClient.post('/feed', { query: message }).then(response => response.body);
+  // * NOTE: https://developers.facebook.com/docs/instagram-api/guides/content-publishing
+  public broadcast(message: InstagramBusinessBroadcastMessage) {
+    return this.httpClient
+      .post(`${this.userId}/media`, { query: { caption: message.message } })
+      .then(response => response.body);
   }
 }
 
-export default FacebookPageConnector;
+export default InstagramBusinessConnector;
