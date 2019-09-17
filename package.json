@@ -12,10 +12,12 @@
     "email": "ahlee2326@me.com"
   },
   "keywords": [
-    "facebook",
+    "facebook-page",
+    "instagram-business",
     "linkedin",
+    "share",
     "social-media",
-    "share"
+    "twitter"
   ],
   "main": "dist/brawdkaster.cjs.js",
   "module": "dist/brawdkaster.esm.js",
