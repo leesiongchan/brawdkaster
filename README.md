@@ -19,7 +19,7 @@ const linkedInConnector = new LinkedInConnector({
   accessToken: 'a1b2',
   id: 'my-linkedin',
 });
-const twitterConnector = new LinkedInConnector({
+const twitterConnector = new TwitterConnector({
   accessToken: '1234',
   accessTokenSecret: '5678',
   consumerKey: 'abcd',
