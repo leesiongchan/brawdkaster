@@ -32,7 +32,7 @@
     "test": "ts-node test/test.ts"
   },
   "dependencies": {
-    "got": "^9.6.0",
+    "got": "^11.8.5",
     "oauth-1.0a": "^2.2.6",
     "promise.allsettled": "^1.0.1"
   },
